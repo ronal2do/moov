@@ -1,82 +1,105 @@
 #!/usr/bin/env node
 "use strict";
 
-var colors   = require('colors');
-var request  = require('request');
+var https    = require('https');
 var inquirer = require('inquirer');
 var program  = require('commander');
 var shell    = require('shelljs');
-var parse    = require('xml2js').parseString; 
 
 var search   = 'https://yts.ag/api/v2/list_movies.json?query_term=';
 var details	 = 'https://yts.ag/api/v2/movie_details.json?movie_id=';
 
 program
-	.version('[0.0.1] - MoviesCLI'.cyan)
+	.version('[0.0.1] - MoviesCLI')
 	.command('search <movie>')
 	.description('Search for a movie')
 	.action(function (movie) {
-
-		request({
-			url  : search + encodeURI(movie),
-			json : true
-		}, function (err, res, response) {
-
-			var r = response.data.movies;
-			var list = [];
-
-			console.log('Results for: '.green + movie + '\r\n');
-			
-			for (var i in r) {
-				list.push({
-					'name'  : r[i].title_long,
-					'value' : r[i].id
-				});
-			};
-
-			inquirer.prompt([
-				{
-					type    : 'list',
-					name    : 'movie',
-					message : 'Results for: ' + movie,
-					choices : list,
-					default : 0 
-				}
-			]).then(function (answers) {
-				request({
-					url 	: details + answers.movie,
-					json	: true
-				}, function (err, res, response) {
-					var movie 		= response.data.movie;
-					var torrents	= movie.torrents;
-					var list 		= [];
-
-					for (var i in torrents) {
-						list.push({
-							name 	: torrents[i].quality,
-							value	: torrents[i].url
-						});
-					}
-
-					console.log('Movie: '.green + movie.title_long + '\r\n');
-
-					inquirer.prompt([
-						{
-							type    : 'list',
-							name    : 'torrent',
-							message : 'Available qualities for: ' + movie.title_long,
-							choices : list,
-							default : 0
-						}
-					]).then(function (answers) {
-						streamMovie(answers.torrent);
-					});
-				});
-			});
-
-		});
+		searchResponse(movie);
 	});
 
+// Request using https protocol
+var request = function (url, callback) {
+	https.get(url, function (response) {
+		var data = '';
+
+		response.on('data', function (newData) {
+			data += newData;
+		});
+
+		response.on('end', function () {
+			callback(data);
+		});
+	});
+}
+
+// List movies for search
+var searchResponse = function (terms) {
+	request(search + encodeURI(terms), function (data) {
+		makeList(JSON.parse(data).data.movies, selectQuality);
+	});
+}
+
+// Make a list
+var makeList = function (object, callback) {
+	var list = [];
+
+	for (var i in object) {
+		list.push({
+			'name' : object[i].title_long,
+			'value': object[i].id
+		});
+	}
+
+	inquirer.prompt([
+		{
+			type    : 'list',
+			name    : 'movie',
+			message : 'Select your movies: ',
+			choices : list,
+			default : 0
+		}
+	]).then(function (answers) {
+
+		if (typeof callback == 'function') {
+			callback(answers);
+		}
+	});
+};
+
+// Select a quality for movie
+var selectQuality = function (object) {
+	var movieID = object.movie;
+
+	request(details + movieID, function (response) {
+		response = JSON.parse(response).data;
+
+		var movie    = response.movie;
+		var torrents = movie.torrents;
+		var list     = [];
+
+		for (var i in torrents) {
+			list.push({
+				name  : torrents[i].quality,
+				value : torrents[i].url 
+			})
+		};
+
+		inquirer.prompt([
+			{
+				type    : 'list',
+				name    : 'torrent',
+				message : 'Available qualities for: ' + movie.title_long,
+				choices : list,
+				default : 0
+			}
+		]).then(function (answers) {
+			streamMovie(answers.torrent);
+		});
+
+	});
+};
+
+// Stream movie from a torrentURL
 var streamMovie = function (torrentURL) {
 	shell.exec('peerflix ' + torrentURL + ' --vlc');
 }
