@@ -5,6 +5,12 @@ var https    = require('https');
 var inquirer = require('inquirer');
 var program  = require('commander');
 var shell    = require('shelljs');
+var OS       = require('opensubtitles-api');
+var download = require('download');
+
+var OS = new OS({
+	useragent: 'OSTestUserAgent'
+});
 
 var search   = 'https://yts.ag/api/v2/list_movies.json?query_term=';
 var details	 = 'https://yts.ag/api/v2/movie_details.json?movie_id=';
@@ -93,7 +99,22 @@ var selectQuality = function (object) {
 				default : 0
 			}
 		]).then(function (answers) {
-			streamMovie(answers.torrent);
+
+			// Legendas
+			OS.search({
+				sublanguageid : 'pob',
+				extensions: ['srt'],
+				imdbid : movie.imdb_code
+			}).then(function (strs) {
+				new download({mode: '755'})
+				    .get(strs.pb.url)
+				    .dest('./subs')
+				    .run();
+
+				streamMovie(answers.torrent, './subs/'+ strs.pb.id +'.srt');
+			}).catch(function (e) {
+				console.log(e);
+			});
 		});
 
 	});
