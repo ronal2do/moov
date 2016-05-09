@@ -8,7 +8,8 @@ var program  = require('commander');
 var shell    = require('shelljs');
 var parse    = require('xml2js').parseString; 
 
-var search   = 'https://yts.ag/ajax/search?query=';
+var search   = 'https://yts.ag/api/v2/list_movies.json?query_term=';
+var details	 = 'https://yts.ag/api/v2/movie_details.json?movie_id=';
 
 program
 	.version('[0.0.1] - MoviesCLI'.cyan)
@@ -21,13 +22,16 @@ program
 			json : true
 		}, function (err, res, response) {
 
-			var r = response.data;
+			var r = response.data.movies;
 			var list = [];
 
 			console.log('Results for: '.green + movie + '\r\n');
 			
 			for (var i in r) {
-				list.push(r[i].title);
+				list.push({
+					'name'  : r[i].title_long,
+					'value' : r[i].id
+				});
 			};
 
 			inquirer.prompt([
@@ -39,30 +43,39 @@ program
 					default : 0 
 				}
 			]).then(function (answers) {
-				console.log('Download...'.cyan);
-				getUrl(answers.movie);
+				request({
+					url 	: details + answers.movie,
+					json	: true
+				}, function (err, res, response) {
+					var movie 		= response.data.movie;
+					var torrents	= movie.torrents;
+					var list 		= [];
+
+					for (var i in torrents) {
+						list.push({
+							name 	: torrents[i].quality,
+							value	: torrents[i].url
+						});
+					}
+
+					console.log('Movie: '.green + movie.title_long + '\r\n');
+
+					inquirer.prompt([
+						{
+							type    : 'list',
+							name    : 'torrent',
+							message : 'Available qualities for: ' + movie.title_long,
+							choices : list,
+							default : 0
+						}
+					]).then(function (answers) {
+						streamMovie(answers.torrent);
+					});
+				});
 			});
 
 		});
 	});
-
-// Get torrent link do stream
-var getUrl = function (title) {
-	var query = 'https://yts.ag/rss/'+ encodeURI(title) +'/720p/all/0';
-	var url;
-
-	request({
-		url : query
-	}, function (err, response, data) {
-
-		// Convert xml to json
-		parse(data, function (err, obj) {
-			url = obj.rss.channel[0].item[0].enclosure[0].$.url;
-
-			streamMovie(url);
-		});
-	});
-};
 
 var streamMovie = function (torrentURL) {
 	shell.exec('peerflix ' + torrentURL + ' --vlc');
