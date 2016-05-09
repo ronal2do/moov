@@ -1,0 +1,71 @@
+#!/usr/bin/env node
+"use strict";
+
+var colors   = require('colors');
+var request  = require('request');
+var inquirer = require('inquirer');
+var program  = require('commander');
+var shell    = require('shelljs');
+var parse    = require('xml2js').parseString; 
+
+var search   = 'https://yts.ag/ajax/search?query=';
+
+program
+	.version('[0.0.1] - MoviesCLI'.cyan)
+	.command('search <movie>')
+	.description('Search for a movie')
+	.action(function (movie) {
+
+		request({
+			url  : search + encodeURI(movie),
+			json : true
+		}, function (err, res, response) {
+
+			var r = response.data;
+			var list = [];
+
+			console.log('Results for: '.green + movie + '\r\n');
+			
+			for (var i in r) {
+				list.push(r[i].title);
+			};
+
+			inquirer.prompt([
+				{
+					type    : 'list',
+					name    : 'movie',
+					message : 'Results for: ' + movie,
+					choices : list,
+					default : 0 
+				}
+			]).then(function (answers) {
+				console.log('Download...'.cyan);
+				getUrl(answers.movie);
+			});
+
+		});
+	});
+
+// Get torrent link do stream
+var getUrl = function (title) {
+	var query = 'https://yts.ag/rss/'+ encodeURI(title) +'/720p/all/0';
+	var url;
+
+	request({
+		url : query
+	}, function (err, response, data) {
+
+		// Convert xml to json
+		parse(data, function (err, obj) {
+			url = obj.rss.channel[0].item[0].enclosure[0].$.url;
+
+			streamMovie(url);
+		});
+	});
+};
+
+var streamMovie = function (torrentURL) {
+	shell.exec('peerflix ' + torrentURL + ' --vlc');
+}
+
+program.parse(process.argv);

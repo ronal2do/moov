@@ -1,2 +1,5 @@
-# mooplayr
-NAUM QUERO!
+# MoviesCLI
+
+> Make Awesome Eggs
+
+## Requirements
