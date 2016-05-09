@@ -100,8 +100,14 @@ var selectQuality = function (object) {
 };
 
 // Stream movie from a torrentURL
-var streamMovie = function (torrentURL) {
-	shell.exec('peerflix ' + torrentURL + ' --vlc');
+var streamMovie = function (torrentURL, substr) {
+	var execStr = 'peerflix ' + torrentURL + ' --vlc';
+
+	if (substr != undefined) {
+		execStr += ' -- --sub-file=' + substr;
+	}
+
+	shell.exec(execStr);
 }
 
 program.parse(process.argv);
