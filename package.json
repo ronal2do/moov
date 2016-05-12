@@ -3,6 +3,8 @@
     "commander": "^2.9.0",
     "download": "^4.4.3",
     "inquirer": "^1.0.2",
+    "kat-api-ce": "0.0.4",
+    "opensubtitles-api": "^2.4.1",
     "shelljs": "^0.7.0"
   }
 }

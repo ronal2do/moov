@@ -1,14 +1,17 @@
 #!/usr/bin/env node
 "use strict";
 
-var https    = require('https');
-var inquirer = require('inquirer');
-var program  = require('commander');
-var shell    = require('shelljs');
-var OS       = require('opensubtitles-api');
-var download = require('download');
+var https     = require('https');
+var inquirer  = require('inquirer');
+var program   = require('commander');
+var shell     = require('shelljs');
+var fs        = require('fs');
+var subs      = require('node-legendastv');
 
-var OS = new OS({
+var Download  = require('download');
+var OS        = require('opensubtitles-api');
+
+var Subs = new OS({
 	useragent: 'OSTestUserAgent'
 });
 
@@ -100,23 +103,37 @@ var selectQuality = function (object) {
 			}
 		]).then(function (answers) {
 
-			// Legendas
-			OS.search({
+			Subs.search({
 				sublanguageid : 'pob',
 				extensions: ['srt'],
 				imdbid : movie.imdb_code
 			}).then(function (strs) {
+
 				new download({mode: '755'})
 				    .get(strs.pb.url)
 				    .dest('./subs')
 				    .run();
 
 				streamMovie(answers.torrent, './subs/'+ strs.pb.id +'.srt');
+
 			}).catch(function (e) {
-				console.log(e);
+				inquirer.prompt([
+					{
+						type : 'confirm',
+						name : 'continue',
+						message : 'No subtitles found, stream anyway?',
+						default : false
+					}
+				]).then(function (nosubs) {
+					if (!nosubs.continue) {
+						console.log('Bye!');
+						return;
+					}
+
+					streamMovie(answers.torrent);
+				});
 			});
 		});
-
 	});
 };
 
@@ -129,6 +146,6 @@ var streamMovie = function (torrentURL, substr) {
 	}
 
 	shell.exec(execStr);
-}
+};
 
 program.parse(process.argv);
