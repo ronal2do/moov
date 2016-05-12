@@ -6,8 +6,7 @@ var inquirer  = require('inquirer');
 var program   = require('commander');
 var shell     = require('shelljs');
 var fs        = require('fs');
-
-var Download  = require('download');
+var download  = require('download-file');
 var OS        = require('opensubtitles-api');
 
 var Subs = new OS({
@@ -108,14 +107,18 @@ var selectQuality = function (object) {
 				imdbid : movie.imdb_code
 			}).then(function (strs) {
 
-				new download({mode: '755'})
-				    .get(strs.pb.url)
-				    .dest('./subs')
-				    .run();
+				console.log(strs.pb.url);
 
-				streamMovie(answers.torrent, './subs/'+ strs.pb.id +'.srt');
+				download(strs.pb.url, {directory : './subs'}, function (err) {
+					if (err) throw err;
+				});
+
+				// streamMovie(answers.torrent, './subs/'+ strs.pb.id +'.srt');
 
 			}).catch(function (e) {
+
+				console.log(e);
+
 				inquirer.prompt([
 					{
 						type : 'confirm',
@@ -135,6 +138,7 @@ var selectQuality = function (object) {
 		});
 	});
 };
+
 
 // Stream movie from a torrentURL
 var streamMovie = function (torrentURL, substr) {
