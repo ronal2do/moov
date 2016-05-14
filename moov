@@ -111,16 +111,20 @@ var selectQuality = function (object) {
 
 				// Try get a local subtitle
 				fs.stat(subtitle, function (err, stats) {
-					if (!stats.isFile(subtitle)) {
+
+					if (err || !stats.isFile(subtitle)) {
 						// Download
 						download(strs.pb.url, {directory : './subs'}, function (err) {
-							if (err)
-								throw err;
+							if (!err) {
+								streamMovie(answers.torrent, subtitle);		
+							} else {
+								console.log('err');
+							}
 						});
+					} else {
+						streamMovie(answers.torrent, subtitle);
 					}
 				});
-
-				streamMovie(answers.torrent, subtitle);
 
 			}).catch(function (e) {
 
