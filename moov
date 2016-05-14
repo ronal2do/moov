@@ -107,17 +107,22 @@ var selectQuality = function (object) {
 				imdbid : movie.imdb_code
 			}).then(function (strs) {
 
-				console.log(strs.pb.url);
+				var subtitle = './subs/' + strs.pb.id + '.srt';
 
-				download(strs.pb.url, {directory : './subs'}, function (err) {
-					if (err) throw err;
+				// Try get a local subtitle
+				fs.stat(subtitle, function (err, stats) {
+					if (!stats.isFile(subtitle)) {
+						// Download
+						download(strs.pb.url, {directory : './subs'}, function (err) {
+							if (err)
+								throw err;
+						});
+					}
 				});
 
-				// streamMovie(answers.torrent, './subs/'+ strs.pb.id +'.srt');
+				streamMovie(answers.torrent, subtitle);
 
 			}).catch(function (e) {
-
-				console.log(e);
 
 				inquirer.prompt([
 					{
@@ -138,7 +143,6 @@ var selectQuality = function (object) {
 		});
 	});
 };
-
 
 // Stream movie from a torrentURL
 var streamMovie = function (torrentURL, substr) {
