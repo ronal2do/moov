@@ -111,7 +111,6 @@ var selectQuality = function (object) {
 
 				// Try get a local subtitle
 				fs.stat(subtitle, function (err, stats) {
-
 					if (err || !stats.isFile(subtitle)) {
 						// Download
 						download(strs.pb.url, {directory : './subs'}, function (err) {
