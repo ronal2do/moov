@@ -1,9 +1,33 @@
 {
+  "name": "moov",
+  "version": "1.0.2",
+  "description": "A CLI tool for stram moovies",
+  "main": "./bin/moov.js",
+  "scripts": {
+    "test": "Test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uselessdev/movies-cli.git"
+  },
+  "keywords": [
+    "Movies",
+    "CLI"
+  ],
+  "author": "uselessdev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/uselessdev/movies-cli/issues"
+  },
+  "homepage": "https://github.com/uselessdev/movies-cli#readme",
+  "bin": {
+    "moov": "./bin/moov.js"
+  },
   "dependencies": {
+    "colors": "^1.1.2",
     "commander": "^2.9.0",
     "download-file": "^0.1.5",
     "inquirer": "^1.0.2",
-    "kat-api-ce": "0.0.4",
     "opensubtitles-api": "^2.4.1",
     "shelljs": "^0.7.0"
   }

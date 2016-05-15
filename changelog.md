@@ -7,7 +7,12 @@
 ### Add
 - Search for tv shows
 - Search for subtitles tv show
+
+---
+
+## [1.0.2] - 2016-05-15
 - Select language for subtitle
+- Select resolution in options command
 
 ---
 

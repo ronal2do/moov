@@ -1,5 +1,4 @@
-subs
-temp
 node_modules
+docs.md
 *.sublime-project
 *.sublime-workspace
