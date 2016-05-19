@@ -1,6 +1,6 @@
 # Moov
 
-> Make Awesome Eggs
+> WOLOLO...
 
 ## Requirements
 
@@ -10,6 +10,13 @@
 ## Install
 
 You can clone this:
+
+
+```
+$ npm i -g moov
+```
+
+or 
 
 ```
 $ git clone git@github.com:uselessdev/movies-cli.git movies
@@ -25,8 +32,6 @@ It's simple
 ```
 & moov search <movie-name> -r [resolution]
 ```
-
-Use `-h` for more information.
 
 ## License:
 
