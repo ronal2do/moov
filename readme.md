@@ -19,7 +19,7 @@ $ npm i -g moov
 or 
 
 ```
-$ git clone git@github.com:uselessdev/movies-cli.git movies
+$ git clone git@github.com:uselessdev/moov.git movies
 & cd movies
 & npm link
 & moov
@@ -39,4 +39,4 @@ It's simple
 
 [1]: https://github.com/mafintosh/peerflix "Peerflix: The Salvation of world"
 [2]: http://www.videolan.org/vlc/ "VLC Player :3"
-[3]: https://github.com/uselessdev/movies-cli/blob/master/LICENSE "License"
+[3]: https://github.com/uselessdev/moov/blob/master/LICENSE "License"
