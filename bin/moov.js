@@ -2,19 +2,20 @@
 
 // Third party
 // --------------------------------------------------------
-var colors  = require('colors');
+var colors = require('colors');
 var program = require('commander');
 
 // Libs
 // --------------------------------------------------------
 // var helper = require('./libs/helpers');
 var movie = require('./libs/movies');
+var pkg = require('../package.json');
 
-program.version('[1.3.2]'.grey + ' - Moov'.cyan)
+program.version(pkg.version.cyan + ' - Moov'.cyan)
 	.option('-c, --category [category]', 'Category')
 	.option('-s, --subs [language]', 'Language for subtitle')
   .option('-n, --no-subs', 'No subtitles')
-	.option('-r, --resolution [resolution]', 'Quality for videeo');
+	.option('-q, --quality [quality]', 'Quality for videeo');
 
 // Search
 program
@@ -27,12 +28,10 @@ program
     var options = {
       category : program.category,
       subtitle : program.subs,
-      quality  : program.resolution
+      quality  : program.quality
     };
 
     movie.search(search, options);
-
-		// helper.search(search, options);
 	});
 
 program.parse(process.argv);

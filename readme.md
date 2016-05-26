@@ -9,20 +9,20 @@
 
 ## Install
 
-You can clone this:
+You can install this:
 
 
 ```
 $ npm i -g moov
 ```
 
-or 
+or just:
 
 ```
 $ git clone git@github.com:uselessdev/moov.git movies
-& cd movies
-& npm link
-& moov
+$ cd movies
+$ npm link
+$ moov
 ```
 
 ## Usage:
@@ -30,7 +30,7 @@ $ git clone git@github.com:uselessdev/moov.git movies
 It's simple
 
 ```
-& moov search <movie-name> -r [resolution]
+& moov search <movie-name> -q [quality]
 ```
 
 ## License:

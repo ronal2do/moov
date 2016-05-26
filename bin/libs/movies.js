@@ -10,6 +10,8 @@ var stream   = require('./stream');
 var request  = require('./helpers').request;
 var yts      = require('./yts.json');
 
+var _options = [];
+
 var HOME = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 var subsFolder = HOME + yts.cache + 'subs/';
 
@@ -19,8 +21,7 @@ OpenSubs = new OS({
 
 var Movies = function () {};
 
-Movies.prototype = {
-  
+Movies.prototype = {  
   /**
    * Search movies
    * @param  {String} name
@@ -29,7 +30,10 @@ Movies.prototype = {
   search : function (name, options) {
     var url = yts.search + encodeURI(name) + '&sort_by=year&order_by=asc';
     var choice = this.choiceMovie;
-    
+
+    // SetQuality
+    _options.quality = options.quality;
+
     request(url, function (response) {
       response = JSON.parse(response).data.movies;
 
@@ -40,7 +44,6 @@ Movies.prototype = {
 
       // Make a choice list
       choice(response);
-
     });
   },
 
@@ -74,9 +77,10 @@ Movies.prototype = {
    * @param  {Object} movie
    * @param  {String} resolution
    */
-  getMovie : function (movie, resolution) {
+  getMovie : function (movie) {
     var url = yts.details + movie.id;
     var subs = Movies.prototype.getSubtitle;
+    var quality = _options.quality;
 
     request(url, function (response) {
       var movie = JSON.parse(response).data.movie;
@@ -85,10 +89,8 @@ Movies.prototype = {
 
       for (var i in torrents) {
 
-        if (resolution !== undefined && resolution == torrents[i].quality) {
-
-          // @todo: Search for subtitles
-
+        if (quality !== undefined && quality == torrents[i].quality) {
+          return subs(movie.imdb_code, torrents[i].url);
         } else {
           list.push({
             name : torrents[i].quality,

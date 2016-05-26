@@ -6,14 +6,20 @@
 
 ### Add
 - Save settings
-- Quality video option
 - No subtitles option
 - Clean cache
 - Search for tv shows
 - Search for subtitles tv show
 - Cache subtitles
 
+## [1.0.4] - 2016-05-26
+
+### Added
+- Quality video option
+
 ## [1.0.3] - 2016-05-19
+
+### Added
 - Save subtitles in `~/.moov/subs`
 
 ---
