@@ -28,7 +28,8 @@ program
     var options = {
       category : program.category,
       subtitle : program.subs,
-      quality  : program.quality
+      quality  : program.quality,
+      nosubs   : (program.rawArgs.indexOf('--no-subs') <= 0) ? false : true
     };
 
     movie.search(search, options);

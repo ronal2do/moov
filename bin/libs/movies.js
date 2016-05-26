@@ -33,6 +33,7 @@ Movies.prototype = {
 
     // SetQuality
     _options.quality = options.quality;
+    _options.nosubs = options.nosubs;
 
     request(url, function (response) {
       response = JSON.parse(response).data.movies;
@@ -90,7 +91,11 @@ Movies.prototype = {
       for (var i in torrents) {
 
         if (quality !== undefined && quality == torrents[i].quality) {
-          return subs(movie.imdb_code, torrents[i].url);
+          if (_options.nosubs) {
+            return stream(torrents[i].url);
+          } else {
+            return subs(movie.imdb_code, torrents[i].url);
+          }
         } else {
           list.push({
             name : torrents[i].quality,
@@ -107,13 +112,17 @@ Movies.prototype = {
           choices: list
         }
       ]).then(function (awsers) {
-        subs(movie.imdb_code, awsers.resolution);
+        if (_options.nosubs) {
+          return stream(awsers.resolution);
+        } else {
+          subs(movie.imdb_code, awsers.resolution);
+        }
       });
     });
   },
 
   getSubtitle : function (imdb, torrentURL) {
-    console.log('Search subtitles...'.grey);
+    console.log('Searching subtitles...'.magenta);
 
     OpenSubs.search({
       extensions: ['srt'],

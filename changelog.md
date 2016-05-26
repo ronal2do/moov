@@ -5,17 +5,18 @@
 ## Unreleased
 
 ### Add
-- Save settings
-- No subtitles option
+- Subtitles language option
+- Cache subtitles
 - Clean cache
 - Search for tv shows
 - Search for subtitles tv show
-- Cache subtitles
+- Save settings
 
 ## [1.0.4] - 2016-05-26
 
 ### Added
 - Quality video option
+- No subtitles option
 
 ## [1.0.3] - 2016-05-19
 
