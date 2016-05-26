@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/uselessdev/movies-cli.git"
+    "url": "git+https://github.com/uselessdev/moov.git"
   },
   "keywords": [
     "Movies",
@@ -17,9 +17,9 @@
   "author": "uselessdev",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/uselessdev/movies-cli/issues"
+    "url": "https://github.com/uselessdev/moov/issues"
   },
-  "homepage": "https://github.com/uselessdev/movies-cli#readme",
+  "homepage": "https://github.com/uselessdev/moov#readme",
   "bin": {
     "moov": "./bin/moov.js"
   },

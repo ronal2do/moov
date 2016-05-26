@@ -5,12 +5,16 @@
 ## Unreleased
 
 ### Add
-- Subtitles language option
 - Cache subtitles
 - Clean cache
 - Search for tv shows
 - Search for subtitles tv show
 - Save settings
+
+## [1.0.5] - 2015-05-27
+
+### Added
+- Subtitles language option `-s pob`
 
 ## [1.0.4] - 2016-05-26
 

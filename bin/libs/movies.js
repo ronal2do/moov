@@ -33,7 +33,7 @@ Movies.prototype = {
 
     // SetQuality
     _options.quality = options.quality;
-    _options.nosubs = options.nosubs;
+    _options.subtitle = options.subtitle;
 
     request(url, function (response) {
       response = JSON.parse(response).data.movies;
@@ -90,8 +90,8 @@ Movies.prototype = {
 
       for (var i in torrents) {
 
-        if (quality !== undefined && quality == torrents[i].quality) {
-          if (_options.nosubs) {
+        if (quality !== undefined && quality === torrents[i].quality) {
+          if (!_options.subtitle) {
             return stream(torrents[i].url);
           } else {
             return subs(movie.imdb_code, torrents[i].url);
@@ -112,7 +112,7 @@ Movies.prototype = {
           choices: list
         }
       ]).then(function (awsers) {
-        if (_options.nosubs) {
+        if (!_options.subtitle) {
           return stream(awsers.resolution);
         } else {
           subs(movie.imdb_code, awsers.resolution);
@@ -124,11 +124,16 @@ Movies.prototype = {
   getSubtitle : function (imdb, torrentURL) {
     console.log('Searching subtitles...'.magenta);
 
-    OpenSubs.search({
+    var options = {
       extensions: ['srt'],
       imdbid: imdb
-    }).then(function (response) {
+    };
 
+    if (_options.subtitle) {
+      options.sublanguageid = _options.subtitle;
+    }
+
+    OpenSubs.search(options).then(function (response) {
       var list = [];
 
       // @todo If subtitles are not set yet

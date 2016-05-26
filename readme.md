@@ -30,7 +30,7 @@ $ moov
 It's simple
 
 ```
-& moov search <movie-name> -q [quality]
+$ moov search <movie-name> -q [quality]
 ```
 
 ## License:
