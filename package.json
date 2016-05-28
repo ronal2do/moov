@@ -1,7 +1,7 @@
 {
   "name": "moov",
   "version": "1.0.4",
-  "description": "A CLI tool for stram moovies",
+  "description": "A CLI tool for stream moovies",
   "main": "./bin/moov.js",
   "scripts": {
     "test": "Test"
@@ -29,6 +29,7 @@
     "download-file": "^0.1.5",
     "inquirer": "^1.0.2",
     "opensubtitles-api": "^2.4.1",
+    "peerflix": "^0.35.0",
     "shelljs": "^0.7.0"
   }
 }

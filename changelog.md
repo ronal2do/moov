@@ -11,10 +11,15 @@
 - Search for subtitles tv show
 - Save settings
 
-## [1.0.5] - 2015-05-27
+## [1.1.5] - 2015-05-28
+
+### Fixed
+- Subtitle search
 
 ### Added
 - Subtitles language option `-s pob`
+
+---
 
 ## [1.0.4] - 2016-05-26
 

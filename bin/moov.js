@@ -34,6 +34,7 @@ program
     movie.search(search, options);
 	});
 
+
 program.parse(process.argv);
 
 // If no command was provided

@@ -33,7 +33,7 @@ Movies.prototype = {
 
     // SetQuality
     _options.quality = options.quality;
-    _options.subtitle = options.subtitle;
+    _options.subtitle = options.subtitle
 
     request(url, function (response) {
       response = JSON.parse(response).data.movies;
@@ -129,38 +129,21 @@ Movies.prototype = {
       imdbid: imdb
     };
 
-    if (_options.subtitle) {
+    if (_options.subtitle && typeof _options.subtitle !== 'boolean') {
       options.sublanguageid = _options.subtitle;
     }
 
     OpenSubs.search(options).then(function (response) {
-      var list = [];
 
-      // @todo If subtitles are not set yet
-      for(var i in response) {
-        list.push({
-          name: response[i].langName,
-          value: response[i].url + ':id:' + response[i].id
-        })
-      }
+      if (_options.subtitle && typeof _options.subtitle !== 'boolean') {
 
-      inquirer.prompt([
-        {
-          type: 'list',
-          name: 'subtitles',
-          message: 'Available subtitles:',
-          choices: list
+        for(var i in response) {
+          var url = response[i].url;
+          var id  = response[i].id;
         }
-      ]).then(function (awsers) {
 
-        awsers = awsers.subtitles.split(':id:');
-
-        var url = awsers[0];
-        var id  = awsers[1];
         var subtitle = subsFolder + id + '.srt';
 
-        // @todo: If file exists use this
-        
         download(url, {directory: subsFolder}, function (err) {
           if (!err) {
             stream(torrentURL, subtitle);
@@ -183,8 +166,57 @@ Movies.prototype = {
           }
         });
 
-      });
+      } else {
+        var list = [];
 
+        for(var i in response) {
+          list.push({
+            name: response[i].langName,
+            value: response[i].url + ':id:' + response[i].id
+          })
+        }
+
+        inquirer.prompt([
+          {
+            type: 'list',
+            name: 'subtitles',
+            message: 'Available subtitles:',
+            choices: list
+          }
+        ]).then(function (awsers) {
+
+          awsers = awsers.subtitles.split(':id:');
+
+          var url = awsers[0];
+          var id  = awsers[1];
+          var subtitle = subsFolder + id + '.srt';
+
+          // @todo: If file exists use this
+          
+          download(url, {directory: subsFolder}, function (err) {
+            if (!err) {
+              stream(torrentURL, subtitle);
+            } else {
+              inquirer.prompt([
+                {
+                  type: 'confirm',
+                  name: 'stream',
+                  message: 'Something was broken. You want start stream anyway?',
+                  default: false
+                }
+              ]).then(function (whatido) {
+                if (!whatido) {
+                  console.log('Bye!'.grey);
+                  return;
+                }
+
+                stream(torrentURL);
+              });
+            }
+          });
+
+        });
+      }
     }).catch(function (err) {
       inquirer.prompt([
         {
