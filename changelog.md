@@ -11,7 +11,7 @@
 - Search for subtitles tv show
 - Save settings
 
-## [1.1.5] - 2015-05-28
+## [1.1.4] - 2015-05-28
 
 ### Fixed
 - Subtitle search
