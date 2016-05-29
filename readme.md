@@ -6,7 +6,7 @@
 
 ## Requirements
 
-- [VLC Player][1]
+- [VLC Player][2]
 
 ## Install
 
