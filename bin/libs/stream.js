@@ -7,7 +7,7 @@ module.exports = function (torrent, subtitle) {
 
   console.log('downloading...'.magenta);
 
-  var execStr = 'peerflix "' + torrent + '" --vlc';
+  var execStr = 'node ./node_modules/peerflix/app.js "' + torrent + '" --vlc';
 
   if (subtitle !== undefined) {
     execStr += ' -- --sub-file=' + subtitle;

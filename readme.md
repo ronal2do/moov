@@ -4,8 +4,7 @@
 
 ## Requirements
 
-- [VLC Player][2]
-- [Peerflix][1] installed globally
+- [VLC Player][1]
 
 ## Install
 
@@ -30,13 +29,20 @@ $ moov
 It's simple
 
 ```
-$ moov search <movie-name> -q [quality]
+$ moov search <movie-name> [options]
 ```
+
+to see options available type: `moov --help`
+
+## NOTE:
+
+[Peerflix][1] was added has a dependencie, so you don't need install globally 
+it anymore.
 
 ## License:
 
 [MIT][3]
 
-[1]: https://github.com/mafintosh/peerflix "Peerflix: The Salvation of world"
+[1]: https://github.com/mafintosh/peerflix "Peerflix: The Salvation of the world"
 [2]: http://www.videolan.org/vlc/ "VLC Player :3"
 [3]: https://github.com/uselessdev/moov/blob/master/LICENSE "License"

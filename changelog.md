@@ -6,9 +6,9 @@
 
 ### Add
 - Cache subtitles
-- Clean cache
 - Search for tv shows
 - Search for subtitles tv show
+- Clean cache
 - Save settings
 
 ## [1.1.4] - 2015-05-28
