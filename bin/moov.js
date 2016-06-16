@@ -1,43 +1,42 @@
-#!/usr/bin/env node
+#! /usr/bin/env node
+'use strict'
 
-// Third party
-// --------------------------------------------------------
-var colors = require('colors');
-var program = require('commander');
+require('colors')
+
+// Thirdy party
+// ----------------------------------------------------------------------------
+const program = require('commander')
 
 // Libs
-// --------------------------------------------------------
-// var helper = require('./libs/helpers');
-var movie = require('./libs/movies');
-var pkg = require('../package.json');
+// ----------------------------------------------------------------------------
+const helpers = require('./libs/helpers')
+
+const pkg = require('../package.json')
 
 program.version(pkg.version.cyan + ' - Moov'.cyan)
-	.option('-c, --category [category]', 'Category')
-	.option('-s, --subs [language]', 'Language for subtitle')
-  .option('-n, --no-subs', 'No subtitles')
-	.option('-q, --quality [quality]', 'Quality for videeo');
+  .option('-c, --category [category]', 'Category for movie or tv show')
+  .option('-s, --subtitle [subtitle]', 'Code for subtitle labguage. ex: pob')
+  .option('-n, --no-subtitle', 'Skip the search for subtitles')
+  .option('-q, --quality [quality]', 'Video quality')
+  .option('-t, --tv-show', 'Change the search for tv shows instead movies')
 
-// Search
 program
-	.command('search <search>')
-	.alias('s')
-	.description('Search for a movie')
-	.action(function (search) {
+  .command('search <search>')
+  .alias('s')
+  .description('Search for a movie or tv show')
+  .action(search => {
+    let options = {
+      category: program.category,
+      subtitle: program.subtitle,
+      quality: program.quality,
+      tv: program.tvShow
+    }
 
-    // Make options object
-    var options = {
-      category : program.category,
-      subtitle : program.subs,
-      quality  : program.quality
-    };
+    helpers.search(options)
+  })
 
-    movie.search(search, options);
-	});
+program.parse(process.argv)
 
-
-program.parse(process.argv);
-
-// If no command was provided
 if (!process.argv.slice(2).length) {
-	program.outputHelp();
+  program.outputHelp()
 }

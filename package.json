@@ -4,7 +4,7 @@
   "description": "A CLI tool for stream moovies",
   "main": "./bin/moov.js",
   "scripts": {
-    "test": "Test"
+    "style": "watch 'standard --verbose ./bin/*.js | snazzy' ./bin"
   },
   "repository": {
     "type": "git",
@@ -31,5 +31,13 @@
     "opensubtitles-api": "^2.4.1",
     "peerflix": "^0.35.0",
     "shelljs": "^0.7.0"
+  },
+  "devDependencies": {
+    "snazzy": "^4.0.0",
+    "standard": "^7.1.2",
+    "watch": "^0.18.0"
+  },
+  "standard": {
+    "ignore": "./~bin"
   }
 }
