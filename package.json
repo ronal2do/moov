@@ -4,7 +4,8 @@
   "description": "A CLI tool for stream moovies",
   "main": "./bin/moov.js",
   "scripts": {
-    "style": "watch 'standard --verbose ./bin/*.js | snazzy' ./bin"
+    "style": "watch 'standard --verbose ./bin/*.js | snazzy' ./bin",
+    "test": "standard --verbose ./bin/*.js | snazzy"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,8 @@
     "shelljs": "^0.7.0"
   },
   "devDependencies": {
+    "eztv-api": "0.0.11",
+    "kickass-api": "0.0.3",
     "snazzy": "^4.0.0",
     "standard": "^7.1.2",
     "watch": "^0.18.0"

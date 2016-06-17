@@ -4,14 +4,18 @@
 'use strict'
 
 let https = require('https')
+  , tv = require('./show').search
+  , urlSearch = require('../settings.json').yts.search
 
 const Helper = () => {
 
   const proto = {
-    search: options => {
-      // Se o param '--tv-show' for passado fazer a requisição
-      // usando o módulo do eztv, se não usar a API do
-      // YIFI mesmo.
+    search: (options, query) => {
+      if (!options.tv) {
+        // Criar função pra isso
+      } else {
+        tv(query)
+      }
     },
 
     request: (url, cb) => {

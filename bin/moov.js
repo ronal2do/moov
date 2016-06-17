@@ -32,7 +32,7 @@ program
       tv: program.tvShow
     }
 
-    helpers.search(options)
+    helpers.search(options, search)
   })
 
 program.parse(process.argv)
