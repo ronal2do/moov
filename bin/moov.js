@@ -9,7 +9,7 @@ const program = require('commander')
 
 // Libs
 // ----------------------------------------------------------------------------
-const helpers = require('./libs/helpers')
+const req = require('./libs/search')
 
 const pkg = require('../package.json')
 
@@ -32,7 +32,7 @@ program
       tv: program.tvShow
     }
 
-    helpers.search(options, search)
+    req(options, search)
   })
 
 program.parse(process.argv)

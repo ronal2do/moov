@@ -4,6 +4,9 @@
     "search": "https://yts.ag/api/v2/list_movies.json?query_term=",
     "details": "https://yts.ag/api/v2/movie_details.json?movie_id="
   },
+  "eztv": {
+    "base": "https://eztv.ag"
+  },
   "cache": {
     "subs": "/.moov/subs/",
     "torrents": "/.moov/torrents/"

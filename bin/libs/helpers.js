@@ -3,19 +3,19 @@
  */
 'use strict'
 
-let https = require('https')
-  , tv = require('./show').search
-  , urlSearch = require('../settings.json').yts.search
+const https = require('https')
+    , _ = require('underscore')
 
 const Helper = () => {
-
   const proto = {
-    search: (options, query) => {
-      if (!options.tv) {
-        // Criar função pra isso
-      } else {
-        tv(query)
+    groupBy: (data, key) => {
+      let groups = []
+
+      for (let i in data) {
+        groups.push(data[i][key])
       }
+
+      return _.uniq(groups)
     },
 
     request: (url, cb) => {
