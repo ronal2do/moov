@@ -14,7 +14,6 @@ const req = require('./libs/search')
 const pkg = require('../package.json')
 
 program.version(pkg.version.cyan + ' - Moov'.cyan)
-  .option('-c, --category [category]', 'Category for movie or tv show')
   .option('-s, --subtitle [subtitle]', 'Code for subtitle labguage. ex: pob')
   .option('-n, --no-subtitle', 'Skip the search for subtitles')
   .option('-q, --quality [quality]', 'Video quality')

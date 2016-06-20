@@ -28,19 +28,17 @@
     "colors": "^1.1.2",
     "commander": "^2.9.0",
     "download-file": "^0.1.5",
+    "eztv-api": "0.0.11",
     "inquirer": "^1.0.2",
-    "machinepack-findtorrent": "^0.1.0",
     "opensubtitles-api": "^2.4.1",
     "parse-torrent-name": "^0.5.4",
     "peerflix": "^0.35.0",
-    "shelljs": "^0.7.0"
+    "shelljs": "^0.7.0",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "eztv-api": "0.0.11",
-    "kickass-api": "0.0.3",
     "snazzy": "^4.0.0",
     "standard": "^7.1.2",
-    "underscore": "^1.8.3",
     "watch": "^0.18.0"
   },
   "standard": {

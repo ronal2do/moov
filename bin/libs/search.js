@@ -1,5 +1,5 @@
 /**
- * \libs\search
+ * \libs\Search
  *
  * Search for a movie or tv show
  */

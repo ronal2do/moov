@@ -1,6 +1,0 @@
-{
-  "base" : "https://yts.ag/api/v2/",
-  "search": "https://yts.ag/api/v2/list_movies.json?query_term=",
-  "details": "https://yts.ag/api/v2/movie_details.json?movie_id=",
-  "cache": "/.moov/"
-}

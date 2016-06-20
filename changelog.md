@@ -18,6 +18,9 @@
 ### Added
 - Search for tv shows
 
+### Removed
+- --category argument
+
 ## [1.1.4] - 2015-05-28
 
 ### Fixed

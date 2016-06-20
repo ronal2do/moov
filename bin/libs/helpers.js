@@ -1,5 +1,5 @@
 /**
- * \libs\helpers
+ * \libs\Helpers
  */
 'use strict'
 

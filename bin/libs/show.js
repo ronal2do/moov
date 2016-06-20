@@ -1,5 +1,5 @@
 /**
- * \libs\show
+ * \libs\Show
  *
  * @TODO: [✔] List Show info
  * @TODO: [✔] List Seasons

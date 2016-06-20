@@ -1,5 +1,5 @@
 /**
- * \libs\list
+ * \libs\Prompt
  */
 
 const inquirer = require('inquirer')
