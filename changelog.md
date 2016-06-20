@@ -5,11 +5,18 @@
 ## Unreleased
 
 ### Add
+- Add --magnet argument
+- Add --session argument
+- Add --episode argument
 - Cache subtitles
-- Search for tv shows
-- Search for subtitles tv show
+- Search subtitles for tv show
 - Clean cache
 - Save settings
+
+## [2.2.5] - YYYY-MM-DD
+
+### Added
+- Search for tv shows
 
 ## [1.1.4] - 2015-05-28
 

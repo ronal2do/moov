@@ -6,10 +6,11 @@
 'use strict'
 
 const tv = require('./show')
+    , movie = require('./movie')
 
 module.exports = (options, query) => {
   if (!options.tv) {
-    // @todo Select movies
+    movie(options, query)
   } else {
     tv(query)
   }

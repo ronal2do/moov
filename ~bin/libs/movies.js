@@ -27,51 +27,51 @@ Movies.prototype = {
    * @param  {String} name
    * @param  {Object} options Object for search
    */
-  search : function (name, options) {
-    var url = yts.search + encodeURI(name) + '&sort_by=year&order_by=asc';
-    var choice = this.choiceMovie;
+  // search : function (name, options) {
+  //   var url = yts.search + encodeURI(name) + '&sort_by=year&order_by=asc';
+  //   var choice = this.choiceMovie;
 
-    // SetQuality
-    _options.quality = options.quality;
-    _options.subtitle = options.subtitle
+  //   // SetQuality
+  //   _options.quality = options.quality;
+  //   _options.subtitle = options.subtitle
 
-    request(url, function (response) {
-      response = JSON.parse(response).data.movies;
+  //   request(url, function (response) {
+  //     response = JSON.parse(response).data.movies;
 
-      if (response === undefined || !response.length) {
-        console.error('No movie found. :/');
-        return;
-      }
+  //     if (response === undefined || !response.length) {
+  //       console.error('No movie found. :/');
+  //       return;
+  //     }
 
-      // Make a choice list
-      choice(response);
-    });
-  },
+  //     // Make a choice list
+  //     choice(response);
+  //   });
+  // },
 
   /**
    * Make a choice list
    * @param  {Object} moviesObject
    */
-  choiceMovie : function (moviesObject) {
-    var list  = [];
-    var movie = Movies.prototype.getMovie;
+  // choiceMovie : function (moviesObject) {
+  //   var list  = [];
+  //   var movie = Movies.prototype.getMovie;
 
-    for (var i in moviesObject) {
-      list.push({
-        name: moviesObject[i].title_long,
-        value: moviesObject[i].id
-      })
-    }
+  //   for (var i in moviesObject) {
+  //     list.push({
+  //       name: moviesObject[i].title_long,
+  //       value: moviesObject[i].id
+  //     })
+  //   }
 
-    inquirer.prompt([
-      {
-        type: 'list',
-        name: 'id',
-        message: 'Select your movie',
-        choices: list
-      }
-    ]).then(movie);
-  },
+  //   inquirer.prompt([
+  //     {
+  //       type: 'list',
+  //       name: 'id',
+  //       message: 'Select your movie',
+  //       choices: list
+  //     }
+  //   ]).then(movie);
+  // },
 
   /**
    * List the qualities for movie
