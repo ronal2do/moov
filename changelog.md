@@ -9,14 +9,14 @@
 - Add --session argument
 - Add --episode argument
 - Cache subtitles
-- Search subtitles for tv show
 - Clean cache
 - Save settings
 
-## [2.2.5] - YYYY-MM-DD
+## [2.2.5] - 2016-06-20
 
 ### Added
 - Search for tv shows
+- Search subtitles for tv show
 
 ### Removed
 - --category argument
