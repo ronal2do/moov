@@ -74,8 +74,7 @@ const getQuality = movieId => {
       name: 'url',
       message: 'Available qualities'
     }, q => {
-      subtitle({'imdbid': movie.imdb_code}, q.url)
-      // stream(movie.url)
+      subtitle({imdbid: movie.imdb_code}, q.url)
     })
   })
 }
