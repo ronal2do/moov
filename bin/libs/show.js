@@ -13,7 +13,7 @@ const eztv = require('eztv-api')
     , _ = require('underscore')
     , ptn = require('parse-torrent-name')
     , stream = require('./stream')
-    , group = require('./helpers').groupBy
+    , helpers = require('./helpers')
     , list = require('./prompt').list
     , inquirer = require('inquirer')
 
@@ -59,7 +59,7 @@ const getSeason = showID => {
   let season = []
 
   eztv.getShowEpisodes(showID, (err, response) => {
-    let arr = group(response.episodes, 'seasonNumber')
+    let arr = helpers.groupBy(response.episodes, 'seasonNumber')
 
     arr.map( n => season.push({
       name: 'Season ' + n,
@@ -90,25 +90,57 @@ const getEpisodes = (showID, season) => {
       return e.seasonNumber === season
     })
 
-    arr.map(i => {
-      originalTitle = i.title
-      let title = ptn(i.title)
+    arr.map(episode => getEpisodeInfo(episode))
 
-      if (title.resolution === '720p') {
-        episodes.push({
-          name: 'Episode: ' + title.episode,
-          value: i.magnet
-        })  
-      }
-    })
+    // arr.map(i => {
+    //   originalTitle = i.title
+    //   let title = ptn(i.title)
 
-    list(episodes, {
-      name: 'url',
-      message: 'Listing episodes for season: ' + season
-    }, e => {
-      subtitle({query: originalTitle}, e.url)
-    })
+    //   if (title.resolution === '720p') {
+    //     episodes.push({
+    //       name: 'Episode: ' + title.episode,
+    //       value: i
+    //     })  
+    //   }
+    // })
+
+    // list(episodes, {
+    //   name: 'info',
+    //   message: 'Listing episodes for season: ' + season
+    // }, e => {
+
+    //   console.log(e.info)
+
+    //   // subtitle({query: originalTitle}, e.url)
+    // })
   })
+}
+
+/**
+ * Get Episode info and stream.
+ * 
+ * @param  String   url [description]
+ * @param  Callback cb  [description]
+ */
+const getEpisodeInfo = (episode) => {
+  let eps = []
+
+  for (let i in episode) {
+    eps.push({
+      info: ptn(episode.title),
+      magnet: episode.magnet
+    })
+  }
+
+  console.log(eps.length)
+
+  // helpers.requestHttp(url, response => {
+  //   response = JSON.parse(response)
+
+  //   if (typeof cb === 'function') {
+  //     cb(response)
+  //   }
+  // })
 }
 
 module.exports = query => {

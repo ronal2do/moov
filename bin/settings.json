@@ -7,6 +7,9 @@
   "eztv": {
     "base": "https://eztv.ag"
   },
+  "omdb": {
+    "base": "http://www.omdbapi.com/?t="
+  },
   "cache": {
     "subs": "/.moov/subs/",
     "torrents": "/.moov/torrents/"

@@ -4,6 +4,7 @@
 'use strict'
 
 const https = require('https')
+    , http = require('http')
     , _ = require('underscore')
 
 const Helper = () => {
@@ -20,6 +21,22 @@ const Helper = () => {
 
     request: (url, cb) => {
       https.get(url, response => {
+        let data = ''
+
+        response.on('data', newData => {
+          data += newData
+        })
+
+        response.on('end', () => {
+          if (typeof cb === 'function') {
+            cb(data)
+          }
+        })
+      })
+    },
+
+    requestHttp: (url, cb) => {
+      http.get(url, response => {
         let data = ''
 
         response.on('data', newData => {
