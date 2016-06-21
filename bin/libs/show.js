@@ -9,6 +9,7 @@
 'use strict'
 
 const eztv = require('eztv-api')
+    , subtitle = require('./subtitle')
     , _ = require('underscore')
     , ptn = require('parse-torrent-name')
     , stream = require('./stream')
@@ -82,6 +83,7 @@ const getSeason = showID => {
  */
 const getEpisodes = (showID, season) => {
   let episodes = []
+  let originalTitle
 
   eztv.getShowEpisodes(showID, (err, response) => {
     let arr = _.filter(response.episodes, e => {
@@ -89,6 +91,7 @@ const getEpisodes = (showID, season) => {
     })
 
     arr.map(i => {
+      originalTitle = i.title
       let title = ptn(i.title)
 
       if (title.resolution === '720p') {
@@ -103,7 +106,7 @@ const getEpisodes = (showID, season) => {
       name: 'url',
       message: 'Listing episodes for season: ' + season
     }, e => {
-      stream(e.url)
+      subtitle({query: originalTitle}, e.url)
     })
   })
 }
