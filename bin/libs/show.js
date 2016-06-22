@@ -77,7 +77,11 @@ const getSeason = show => {
     arr.map(n => {
       season.push({
         name: 'Season: ' + n,
-        value: n
+        value: {
+          season: n,
+          title: show.title,
+          slug: show.slug
+        }
       })
     })
 
@@ -96,9 +100,9 @@ const getSeason = show => {
  * @param  integer season
  * @param  string title
  */
-const getShowEpisodes = (season, title) => {
+const getShowEpisodes = (show) => {
   let episodes = []
-  let url = omdb + title + '&Season=' + season
+  let url = omdb + show.title + '&Season=' + show.season
 
   helpers.requestHttp(url, response => {
     response = JSON.parse(response)
@@ -107,9 +111,11 @@ const getShowEpisodes = (season, title) => {
       episodes.push({
         name: ep.Episode + ' - ' + ep.Title,
         value: {
-          season: season,
+          season: show.season,
           episode: ep.Episode,
-          imdb: ep.imdbID
+          imdb: ep.imdbID,
+          slug: show.slug,
+          title: show.title + ' ' + ep.Title
         }
       })
     })
@@ -122,7 +128,14 @@ const getShowEpisodes = (season, title) => {
 }
 
 const streamShow = info => {
-  console.log(info)
+  let search = require('../../cache/'+ info.slug +'.json')
+
+  let episode = _.filter(search.episodes, e => {
+    return e.seasonNumber === info.season && e.episodeNumber == info.episode
+  })
+
+  stream(episode[0].magnet)
+  // subtitle({query: info.title, season: info.season, episode: info.episode}, episode[0].magnet)
 }
 
 module.exports = query => {

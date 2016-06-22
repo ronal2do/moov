@@ -29,7 +29,6 @@ const searchSubtitle = (options, torrent) => {
   opensubs
     .search(options)
     .then( response => {
-
       // Se nenhum idioma de legenda foi adicionado
       let subtitleList = []
 
