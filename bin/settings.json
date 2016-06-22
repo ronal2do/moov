@@ -12,6 +12,7 @@
   },
   "cache": {
     "subs": "/.moov/subs/",
-    "torrents": "/.moov/torrents/"
+    "torrents": "/.moov/torrents/",
+    "search": "/.moov/search/"
   }
 }

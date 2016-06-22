@@ -16,6 +16,9 @@ const eztv = require('eztv-api')
     , helpers = require('./helpers')
     , list = require('./prompt').list
     , inquirer = require('inquirer')
+    , omdb = require('../settings.json').omdb.base
+    , fs = require('fs')
+    , path = require('path')
 
 /**
  * List shows for query search.
@@ -36,16 +39,20 @@ const getShow = q => {
       if (response.hasOwnProperty(i)) {
         shows.push({
           name: response[i].title,
-          value: response[i].id
+          value: {
+            id: response[i].id, 
+            title: response[i].title,
+            slug: response[i].slug
+          }
         })
       }
     }
 
     list(shows, {
-      name: 'id',
+      name: 'info',
       message: 'Listing tv shows'
     }, show => {
-      getSeason(show.id)
+      getSeason(show.info)
     })
   })
 }
@@ -55,92 +62,67 @@ const getShow = q => {
  * 
  * @param  Integer showID id tv-show
  */
-const getSeason = showID => {
+const getSeason = show => {
   let season = []
 
-  eztv.getShowEpisodes(showID, (err, response) => {
+  eztv.getShowEpisodes(show.id, (err, response) => {
+    if (err) {
+      throw err
+    }
+
+    fs.writeFile(path.resolve(__dirname, '../../cache/' + show.slug + '.json'), JSON.stringify(response))
+
     let arr = helpers.groupBy(response.episodes, 'seasonNumber')
 
-    arr.map( n => season.push({
-      name: 'Season ' + n,
-      value: n
-    }))
-    
+    arr.map(n => {
+      season.push({
+        name: 'Season: ' + n,
+        value: n
+      })
+    })
+
     list(season, {
       name: 'season',
-      message: 'Listing Seasons'
+      message: 'Listing seasons'
     }, e => {
-      getEpisodes(showID, e.season)
+      getShowEpisodes(e.season, show.title)
     })
   })
 }
 
 /**
- * List episode for season.
+ * List episodes for season.
  * 
- * @param  integer showID
- * @param  integer season Season Number
+ * @param  integer season
+ * @param  string title
  */
-const getEpisodes = (showID, season) => {
+const getShowEpisodes = (season, title) => {
   let episodes = []
-  let originalTitle
+  let url = omdb + title + '&Season=' + season
 
-  eztv.getShowEpisodes(showID, (err, response) => {
-    let arr = _.filter(response.episodes, e => {
-      return e.seasonNumber === season
+  helpers.requestHttp(url, response => {
+    response = JSON.parse(response)
+
+    response.Episodes.map( ep => {
+      episodes.push({
+        name: ep.Episode + ' - ' + ep.Title,
+        value: {
+          season: season,
+          episode: ep.Episode,
+          imdb: ep.imdbID
+        }
+      })
     })
 
-    arr.map(episode => getEpisodeInfo(episode))
-
-    // arr.map(i => {
-    //   originalTitle = i.title
-    //   let title = ptn(i.title)
-
-    //   if (title.resolution === '720p') {
-    //     episodes.push({
-    //       name: 'Episode: ' + title.episode,
-    //       value: i
-    //     })  
-    //   }
-    // })
-
-    // list(episodes, {
-    //   name: 'info',
-    //   message: 'Listing episodes for season: ' + season
-    // }, e => {
-
-    //   console.log(e.info)
-
-    //   // subtitle({query: originalTitle}, e.url)
-    // })
+    list(episodes, {
+      name: 'info',
+      message: 'Listing episodes'
+    }, ep => streamShow(ep.info))
   })
 }
 
-/**
- * Get Episode info and stream.
- * 
- * @param  String   url [description]
- * @param  Callback cb  [description]
- */
-const getEpisodeInfo = (episode) => {
-  let eps = []
-
-  for (let i in episode) {
-    eps.push({
-      info: ptn(episode.title),
-      magnet: episode.magnet
-    })
-  }
-
-  console.log(eps.length)
-
-  // helpers.requestHttp(url, response => {
-  //   response = JSON.parse(response)
-
-  //   if (typeof cb === 'function') {
-  //     cb(response)
-  //   }
-  // })
+const streamShow = info => {
+  console.log(info)
 }
 
 module.exports = query => {
