@@ -1,6 +1,6 @@
 /**
  * \libs\Subtitle
- * 
+ *
  * @TODO: [✔] List Subtitles
  * @TODO: [✔] Download subtitles
  * @TODO: [ ] Verify if language for subtitle is set
@@ -9,12 +9,12 @@
 'use strict'
 
 const OS = require('opensubtitles-api')
-    , stream = require('./stream')
-    , download = require('download-file')
-    , list = require('./prompt').list
-    , cache = require('../settings.json').cache.subs
-    , HOME = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME']
-    , subsFolder = HOME + cache
+const stream = require('./stream')
+const download = require('download-file')
+const list = require('./prompt').list
+const cache = require('../settings.json').cache.subs
+const HOME = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
+const subsFolder = HOME + cache
 
 const opensubs = new OS({
   useragent: 'OSTestUserAgent'
@@ -22,17 +22,17 @@ const opensubs = new OS({
 
 /**
  * Search for subtitle.
- * 
+ *
  * @param  Object options
  */
 const searchSubtitle = (options, torrent) => {
   opensubs
     .search(options)
-    .then( response => {
+    .then(response => {
       // Se nenhum idioma de legenda foi adicionado
       let subtitleList = []
 
-      for(let i in response) {
+      for (let i in response) {
         subtitleList.push({
           name: response[i].langName,
           value: response[i].url + ':sid:' + response[i].id
@@ -45,13 +45,12 @@ const searchSubtitle = (options, torrent) => {
       }, e => {
         downloadSubtitle(e.subtitle, torrent)
       })
-
-    }).catch( err => console.log(err) )
+    }).catch(err => console.log(err))
 }
 
 /**
  * Download the subtitle, if file not exists.
- * 
+ *
  * @param  String url
  */
 const downloadSubtitle = (url, torrent) => {
@@ -70,7 +69,7 @@ const downloadSubtitle = (url, torrent) => {
 
 /**
  * The param for search.
- * 
+ *
  * @param  object query
  */
 module.exports = (query, movieURL) => {

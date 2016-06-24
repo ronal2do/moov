@@ -9,21 +9,18 @@
 'use strict'
 
 const eztv = require('eztv-api')
-    , subtitle = require('./subtitle')
-    , _ = require('underscore')
-    , ptn = require('parse-torrent-name')
-    , stream = require('./stream')
-    , helpers = require('./helpers')
-    , list = require('./prompt').list
-    , inquirer = require('inquirer')
-    , omdb = require('../settings.json').omdb.base
-    , fs = require('fs')
-    , path = require('path')
+const subtitle = require('./subtitle')
+const _ = require('underscore')
+const helpers = require('./helpers')
+const list = require('./prompt').list
+const omdb = require('../settings.json').omdb.base
+const fs = require('fs')
+const path = require('path')
 
 /**
  * List shows for query search.
- * 
- * @param  String q query search
+ *
+ * @param String q query search
  */
 const getShow = q => {
   let shows = []
@@ -35,12 +32,12 @@ const getShow = q => {
       throw err
     }
 
-    for(let i in response) {
+    for (let i in response) {
       if (response.hasOwnProperty(i)) {
         shows.push({
           name: response[i].title,
           value: {
-            id: response[i].id, 
+            id: response[i].id,
             title: response[i].title,
             slug: response[i].slug
           }
@@ -57,9 +54,9 @@ const getShow = q => {
   })
 }
 
-/** 
+/**
  * List Seasons for a tv-show.
- * 
+ *
  * @param  Integer showID id tv-show
  */
 const getSeason = show => {
@@ -96,7 +93,7 @@ const getSeason = show => {
 
 /**
  * List episodes for season.
- * 
+ *
  * @param  integer season
  * @param  string title
  */
@@ -107,12 +104,12 @@ const getShowEpisodes = (show) => {
   helpers.requestHttp(url, response => {
     response = JSON.parse(response)
 
-    response.Episodes.map( ep => {
+    response.Episodes.map(ep => {
       episodes.push({
         name: ep.Episode + ' - ' + ep.Title,
         value: {
           season: show.season,
-          episode: ep.Episode,
+          episode: parseInt(ep.Episode),
           imdb: ep.imdbID,
           slug: show.slug,
           title: show.title + ' ' + ep.Title
@@ -128,14 +125,13 @@ const getShowEpisodes = (show) => {
 }
 
 const streamShow = info => {
-  let search = require('../../cache/'+ info.slug +'.json')
+  let search = require('../../cache/' + info.slug + '.json')
 
   let episode = _.filter(search.episodes, e => {
-    return e.seasonNumber === info.season && e.episodeNumber == info.episode
+    return e.seasonNumber === info.season && e.episodeNumber === info.episode
   })
 
-  stream(episode[0].magnet)
-  // subtitle({query: info.title, season: info.season, episode: info.episode}, episode[0].magnet)
+  subtitle({imdbid: info.imdb}, episode[0].magnet)
 }
 
 module.exports = query => {

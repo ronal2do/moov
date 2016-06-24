@@ -6,7 +6,7 @@
 'use strict'
 
 const tv = require('./show')
-    , movie = require('./movie')
+const movie = require('./movie')
 
 module.exports = (options, query) => {
   if (!options.tv) {

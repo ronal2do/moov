@@ -4,8 +4,8 @@
 'use strict'
 
 const https = require('https')
-    , http = require('http')
-    , _ = require('underscore')
+const http = require('http')
+const _ = require('underscore')
 
 const Helper = () => {
   const proto = {

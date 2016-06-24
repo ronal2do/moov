@@ -13,16 +13,15 @@
 require('colors')
 
 const request = require('./helpers').request
-    , list = require('./prompt').list
-    , subtitle = require('./subtitle')
-    , stream = require('./stream')
-    , yts = require('../settings.json').yts
+const list = require('./prompt').list
+const subtitle = require('./subtitle')
+const yts = require('../settings.json').yts
 
 /**
  * Search movies.
- * 
- * @param  Object options
- * @param  String q
+ *
+ * @param Object options
+ * @param String q
  */
 const getMovie = (options, q) => {
   let movieList = []
@@ -35,7 +34,7 @@ const getMovie = (options, q) => {
       return console.error('No movie found. :/'.red)
     }
 
-    response.map( e => {
+    response.map(e => {
       movieList.push({
         name: e.title_long,
         value: e.id
@@ -53,7 +52,7 @@ const getMovie = (options, q) => {
 
 /**
  * List Availables qualities for movie.
- * 
+ *
  * @param  integer movieId
  */
 const getQuality = movieId => {
@@ -62,8 +61,8 @@ const getQuality = movieId => {
 
   request(url, response => {
     let movie = JSON.parse(response).data.movie
-    
-    movie.torrents.map( e => {
+
+    movie.torrents.map(e => {
       qualities.push({
         name: e.quality,
         value: e.url

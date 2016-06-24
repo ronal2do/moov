@@ -1,6 +1,7 @@
 /**
  * \libs\Prompt
  */
+'use strict'
 
 const inquirer = require('inquirer')
 

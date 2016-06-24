@@ -4,8 +4,8 @@
   "description": "A CLI tool for stream moovies",
   "main": "./bin/moov.js",
   "scripts": {
-    "style": "watch 'standard --verbose ./bin/*.js | snazzy' ./bin",
-    "test": "standard --verbose ./bin/*.js | snazzy"
+    "style": "watch 'standard --verbose \"./bin/**/*.js\" | snazzy' ./bin",
+    "test": "standard --verbose './bin/**/*.js' | snazzy"
   },
   "repository": {
     "type": "git",
@@ -31,7 +31,6 @@
     "eztv-api": "0.0.11",
     "inquirer": "^1.0.2",
     "opensubtitles-api": "^2.4.1",
-    "parse-torrent-name": "^0.5.4",
     "peerflix": "^0.35.0",
     "shelljs": "^0.7.0",
     "underscore": "^1.8.3"
