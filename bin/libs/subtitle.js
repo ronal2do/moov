@@ -13,6 +13,7 @@ const stream = require('./stream')
 const download = require('download-file')
 const list = require('./prompt').list
 const cache = require('../settings.json').cache.subs
+const fs = require('fs')
 const HOME = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME']
 const subsFolder = HOME + cache
 
@@ -31,11 +32,14 @@ const searchSubtitle = (options, torrent) => {
     .then(response => {
       // Se nenhum idioma de legenda foi adicionado
       let subtitleList = []
+      let subtitleID
 
       for (let i in response) {
+        subtitleID = response[i].id
+
         subtitleList.push({
           name: response[i].langName,
-          value: response[i].url + ':sid:' + response[i].id
+          value: response[i].url + ':sid:' + subtitleID
         })
       }
 
@@ -43,7 +47,13 @@ const searchSubtitle = (options, torrent) => {
         name: 'subtitle',
         message: 'Available subtitles'
       }, e => {
-        downloadSubtitle(e.subtitle, torrent)
+        let subtitlePath = subsFolder + subtitleID + '.srt'
+
+        if (!verifySubtitleExists(subtitlePath)) {
+          downloadSubtitle(e.subtitle, torrent)
+        } else {
+          stream(torrent)
+        }
       })
     }).catch(err => console.log(err))
 }
@@ -65,6 +75,14 @@ const downloadSubtitle = (url, torrent) => {
 
     // @TODO: if can't download verify if stream
   })
+}
+
+const verifySubtitleExists = name => {
+  try {
+    return fs.statSync(name).isFile()
+  } catch (e) {
+    return false
+  }
 }
 
 /**

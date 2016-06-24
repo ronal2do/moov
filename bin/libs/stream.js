@@ -7,7 +7,7 @@ require('colors')
 
 const shell = require('shelljs')
 const path = require('path')
-const peerflixPath = path.resolve(__dirname, '/../../node_modules/peerflix/app.js')
+const peerflixPath = path.resolve(path.join(__dirname, '/../../node_modules/peerflix/app.js'))
 
 module.exports = (torrent, subtitle) => {
   console.log('downloading...'.cyan)

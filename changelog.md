@@ -8,9 +8,13 @@
 - Add --magnet argument
 - Add --session argument
 - Add --episode argument
-- Cache subtitles
 - Clean cache
 - Save settings
+
+## [2.2.6] - 2016-MM-DD
+
+### Added
+- Verify if subtitle files exists before download
 
 ## [2.2.5] - 2016-06-20
 
