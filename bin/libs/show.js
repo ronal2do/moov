@@ -1,21 +1,19 @@
 /**
  * \libs\Show
- *
- * @TODO: [✔] List Show info
- * @TODO: [✔] List Seasons
- * @TODO: [✔] List Episodes
- * @TODO: [✔] Stream the ep
  */
 'use strict'
 
 const eztv = require('eztv-api')
 const subtitle = require('./subtitle')
+const stream = require('./stream')
 const _ = require('underscore')
 const helpers = require('./helpers')
 const list = require('./prompt').list
 const omdb = require('../settings.json').omdb.base
 const fs = require('fs')
 const path = require('path')
+
+let subs
 
 /**
  * List shows for query search.
@@ -131,9 +129,14 @@ const streamShow = info => {
     return e.seasonNumber === info.season && e.episodeNumber === info.episode
   })
 
-  subtitle({imdbid: info.imdb}, episode[0].magnet)
+  if (!subs) {
+    return stream(episode[0].magnet)
+  } else {
+    subtitle({query: info.title, sublanguageid: subs}, episode[0].magnet)
+  }
 }
 
-module.exports = query => {
+module.exports = (query, subtitle) => {
+  subs = subtitle
   getShow(query)
 }

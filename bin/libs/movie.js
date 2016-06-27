@@ -4,8 +4,8 @@
  * @TODO: [✔] List
  * @TODO: [✔] Quality
  * @TODO: [ ] Verify if is quality is set in arguments
- * @TODO: [ ] Subtitle
- * @TODO: [ ] Verify if language for subtitle is set
+ * @TODO: [✔] Subtitle
+ * @TODO: [✔] Verify if language for subtitle is set
  * @TODO: [✔] Stream
  */
 'use strict'
@@ -15,7 +15,10 @@ require('colors')
 const request = require('./helpers').request
 const list = require('./prompt').list
 const subtitle = require('./subtitle')
+const stream = require('./stream')
 const yts = require('../settings.json').yts
+
+let option
 
 /**
  * Search movies.
@@ -23,7 +26,7 @@ const yts = require('../settings.json').yts
  * @param Object options
  * @param String q
  */
-const getMovie = (options, q) => {
+const getMovie = q => {
   let movieList = []
   let url = yts.search + encodeURI(q) + '&sort_by=year&order_by=asc'
 
@@ -73,11 +76,25 @@ const getQuality = movieId => {
       name: 'url',
       message: 'Available qualities'
     }, q => {
-      subtitle({imdbid: movie.imdb_code}, q.url)
+      let param = {
+        imdbid: movie.imdb_code
+      }
+
+      if (!option.subtitle) {
+        return stream(q.url)
+      }
+
+      if (typeof option.subtitle === 'string') {
+        param.sublanguageid = option.subtitle
+      }
+
+      subtitle(param, q.url)
     })
   })
 }
 
 module.exports = (options, query) => {
-  getMovie(options, query)
+  option = options
+
+  getMovie(query)
 }

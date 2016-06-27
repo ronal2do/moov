@@ -1,7 +1,7 @@
 {
   "name": "moov",
   "version": "2.2.5",
-  "description": "A CLI tool for stream moovies",
+  "description": "A CLI tool for stream movies and tv shows",
   "main": "./bin/moov.js",
   "scripts": {
     "style": "watch 'standard --verbose \"./bin/**/*.js\" | snazzy' ./bin",

@@ -25,7 +25,6 @@ program
   .description('Search for a movie or tv show')
   .action(search => {
     let options = {
-      category: program.category,
       subtitle: program.subtitle,
       quality: program.quality,
       tv: program.tvShow

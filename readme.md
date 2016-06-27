@@ -1,6 +1,6 @@
 # Moov
 
-> WOLOLO...
+> Stream Movies and tv shows
 
 ![Using](use.gif "Using")
 
@@ -22,6 +22,7 @@ or just:
 ```
 $ git clone git@github.com:uselessdev/moov.git movies
 $ cd movies
+$ npm install
 $ npm link
 $ moov
 ```
