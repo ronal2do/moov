@@ -116,6 +116,20 @@ const getShowEpisodesFromSeasson = show => {
   helpers.requestHttp(url, response => {
     response = JSON.parse(response)
 
+    if (typeof option.episode !== 'undefined') {
+      let episode = _.filter(response.Episodes, e => {
+        return e.Episode == option.episode
+      })[0]
+
+      return streamShow({
+        season: parseInt(show.season),
+        episode: parseInt(episode.Episode),
+        imdb: episode.imdbID,
+        slug: show.slug,
+        title: show.title + ' - ' + episode.Title
+      })
+    }
+
     response.Episodes.map(ep => {
       episodes.push({
         name: ep.Episode + ' - ' + ep.Title,
@@ -124,7 +138,7 @@ const getShowEpisodesFromSeasson = show => {
           episode: parseInt(ep.Episode),
           imdb: ep.imdbID,
           slug: show.slug,
-          title: show.title + ' ' + ep.Title
+          title: show.title + ' - ' + ep.Title
         }
       })
     })

@@ -17,8 +17,9 @@ program.version(pkg.version.cyan + ' - Moov'.cyan)
   .option('-s, --subtitle [subtitle]', 'Code for subtitle labguage. ex: pob')
   .option('-n, --no-subtitle', 'Skip the search for subtitles')
   .option('-q, --quality [quality]', 'Video quality')
-  .option('-S, --season [season]', 'Session of tv show')
   .option('-t, --tv-show', 'Change the search for tv shows instead movies')
+  .option('-S, --season [season]', 'Session of tv show')
+  .option('-e, --episode [episode]', 'Episode for tv show.')
 
 program
   .command('search <search>')
@@ -29,7 +30,8 @@ program
       subtitle: program.subtitle,
       quality: program.quality,
       tv: program.tvShow,
-      season: program.season
+      season: program.season,
+      episode: program.episode
     }
 
     req(options, search)
