@@ -9,7 +9,7 @@
 - Clean cache
 - Save settings
 
-## [2.2.6] - 2016-MM-DD
+## [2.2.6] - 2016-06-28
 
 ### Added
 - --episode argument

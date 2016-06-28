@@ -37,11 +37,6 @@ $ moov search <movie-name> [options]
 
 to see options available type: `moov --help`
 
-## NOTE:
-
-[Peerflix][1] was added has a dependencie, so you don't need install globally 
-it anymore.
-
 ## License:
 
 [MIT][3]
