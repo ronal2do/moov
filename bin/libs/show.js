@@ -43,6 +43,10 @@ const getShow = q => {
       }
     }
 
+    if (shows.length === 1) {
+      return getSeason(shows[0].value)
+    }
+
     list(shows, {
       name: 'info',
       message: 'Listing tv shows'
