@@ -1,10 +1,5 @@
 /**
- * \libs\Subtitle
- *
- * @TODO: [✔] List Subtitles
- * @TODO: [✔] Download subtitles
- * @TODO: [ ] Verify if language for subtitle is set
- * @TODO: [ ] Stream
+ * \libs\Subtitle.
  */
 'use strict'
 
@@ -30,7 +25,6 @@ const searchSubtitle = (options, torrent) => {
   opensubs
     .search(options)
     .then(response => {
-      // Se nenhum idioma de legenda foi adicionado
       let subtitleList = []
       let subtitleID
 
@@ -43,17 +37,15 @@ const searchSubtitle = (options, torrent) => {
         })
       }
 
+      if (subtitleList.length === 1) {
+        return downloadSubtitle(subtitleList[0].value, torrent)
+      }
+
       list(subtitleList, {
         name: 'subtitle',
         message: 'Available subtitles'
       }, e => {
-        let subtitlePath = subsFolder + subtitleID + '.srt'
-
-        if (!verifySubtitleExists(subtitlePath)) {
-          downloadSubtitle(e.subtitle, torrent)
-        } else {
-          stream(torrent)
-        }
+        downloadSubtitle(e.subtitle, torrent)
       })
     }).catch(err => console.log(err))
 }
@@ -61,22 +53,32 @@ const searchSubtitle = (options, torrent) => {
 /**
  * Download the subtitle, if file not exists.
  *
- * @param  String url
+ * @param  string url
  */
 const downloadSubtitle = (url, torrent) => {
   url = url.split(':sid:')
 
   let subtitle = subsFolder + url[1] + '.srt'
 
-  download(url[0], {directory: subsFolder}, err => {
-    if (!err) {
-      stream(torrent, subtitle)
-    }
+  if (!verifySubtitleExists(subtitle)) {
+    download(url[0], {directory: subsFolder}, err => {
+      if (!err) {
+        return stream(torrent, subtitle)
+      }
 
-    // @TODO: if can't download verify if stream
-  })
+      // @TODO: if can't download verify if stream
+    })
+  } else {
+    stream(torrent, subtitle)
+  }
 }
 
+/**
+ * Verify is subtitle exists before download.
+ *
+ * @param  string name
+ * @return bool
+ */
 const verifySubtitleExists = name => {
   try {
     return fs.statSync(name).isFile()

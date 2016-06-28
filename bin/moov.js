@@ -17,6 +17,7 @@ program.version(pkg.version.cyan + ' - Moov'.cyan)
   .option('-s, --subtitle [subtitle]', 'Code for subtitle labguage. ex: pob')
   .option('-n, --no-subtitle', 'Skip the search for subtitles')
   .option('-q, --quality [quality]', 'Video quality')
+  .option('-S, --season [season]', 'Session of tv show')
   .option('-t, --tv-show', 'Change the search for tv shows instead movies')
 
 program
@@ -27,7 +28,8 @@ program
     let options = {
       subtitle: program.subtitle,
       quality: program.quality,
-      tv: program.tvShow
+      tv: program.tvShow,
+      season: program.season
     }
 
     req(options, search)

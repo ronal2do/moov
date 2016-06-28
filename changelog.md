@@ -6,7 +6,6 @@
 
 ### Add
 - Add --magnet argument
-- Add --session argument
 - Add --episode argument
 - Clean cache
 - Save settings
@@ -14,8 +13,12 @@
 ## [2.2.6] - 2016-MM-DD
 
 ### Added
+- --season argument
 - --no-subs improve
 - Verify if subtitle files exists before download
+
+### Changes
+- If only one subtitles is found download with ask
 
 ## [2.2.5] - 2016-06-20
 

@@ -13,7 +13,7 @@ const omdb = require('../settings.json').omdb.base
 const fs = require('fs')
 const path = require('path')
 
-let subs
+let option
 
 /**
  * List shows for query search.
@@ -69,6 +69,16 @@ const getSeason = show => {
 
     let arr = helpers.groupBy(response.episodes, 'seasonNumber')
 
+    if (arr.indexOf(option.season)) {
+      let showInfo = {
+        season: option.season,
+        title: show.title,
+        slug: show.slug
+      }
+
+      return getShowEpisodesFromSeasson(showInfo, show.title)
+    }
+
     arr.map(n => {
       season.push({
         name: 'Season: ' + n,
@@ -83,8 +93,8 @@ const getSeason = show => {
     list(season, {
       name: 'season',
       message: 'Listing seasons'
-    }, e => {
-      getShowEpisodes(e.season, show.title)
+    }, show => {
+      getShowEpisodesFromSeasson(show.season)
     })
   })
 }
@@ -95,7 +105,7 @@ const getSeason = show => {
  * @param  integer season
  * @param  string title
  */
-const getShowEpisodes = (show) => {
+const getShowEpisodesFromSeasson = show => {
   let episodes = []
   let url = omdb + show.title + '&Season=' + show.season
 
@@ -122,6 +132,11 @@ const getShowEpisodes = (show) => {
   })
 }
 
+/**
+ * Stream the episode.
+ *
+ * @param  object info
+ */
 const streamShow = info => {
   let search = require('../../cache/' + info.slug + '.json')
 
@@ -129,14 +144,14 @@ const streamShow = info => {
     return e.seasonNumber === info.season && e.episodeNumber === info.episode
   })
 
-  if (!subs) {
+  if (!option.subtitle) {
     return stream(episode[0].magnet)
   } else {
-    subtitle({query: info.title, sublanguageid: subs}, episode[0].magnet)
+    subtitle({query: info.title, sublanguageid: option.subtitle}, episode[0].magnet)
   }
 }
 
-module.exports = (query, subtitle) => {
-  subs = subtitle
+module.exports = (query, options) => {
+  option = options
   getShow(query)
 }

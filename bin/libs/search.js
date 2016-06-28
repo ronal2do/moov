@@ -12,6 +12,6 @@ module.exports = (options, query) => {
   if (!options.tv) {
     movie(options, query)
   } else {
-    tv(query, options.subtitle)
+    tv(query, options)
   }
 }
